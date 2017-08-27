@@ -1,0 +1,154 @@
+<style>
+  .c1{
+    background-color: lightgreen;
+    margin-bottom: 20px;
+    margin-top:0px;
+    margin-left: 300px;
+    margin-right: 300px;
+
+
+  }
+  .c2{
+    background-color: white;
+    border: solid black thick;
+    margin-bottom: 18px;
+    text-align: center;
+
+  }
+
+  .c3{
+    background-color: lightgreen;
+    border: solid ;
+    border-color: black;
+    border-width: thick;
+    padding:1%;
+
+  }
+  .c4{
+    border: double thick ;
+    border-color: black ;
+    padding: 2%;
+    margin-bottom: 2%;
+  }
+
+
+  textarea{
+    resize:none;
+  }
+  h1{
+    text-align: center;
+    margin-bottom: 20px;
+    font-bold:true;
+    font-family: DialogInput;
+  }
+  h3{
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+  }
+
+  #head{
+    border-top: double thick;
+    border-top-color: black;
+    padding: 2%;
+    font-weight: bold;
+  }
+
+
+
+
+
+</style>
+
+<div class="c1">
+  <h2>디자인 고자의 2000 년의 초창기 네이버 느낌의 복고풍 게시판</h2>
+  <p align="right" style="font-weight: bold"> by.CH</p>
+  <form action="/home/create" method="post" enctype="multipart/form-data">
+
+    <div class="form-group">
+      <label for="title">제목</label>
+      <input type="text" class="form-control" id="title" name="title" placeholder="글 제목">
+    </div>
+    <div class="form-group">
+      <label for="writer">글쓴이</label>
+      <input type="text" class="form-control" id="writer" name="writer" placeholder="글쓴이">
+    </div>
+    <div class="form-group">
+      <textarea  rows="7"  class="form-control" id="content" name="content" placeholder="내용"></textarea>
+
+
+    </div>
+
+
+    <div class="form-group">
+      <label for="exampleInputFile">파일 첨부</label>
+
+      <input type="file" name="img" id="exampleInputFile">
+    </div>
+    <button type="submit" class="btn btn-default">글 작성</button>
+  </form>
+
+
+  <h3 id="head">*글 작성 내역*</h3>
+
+  <% @posts.each do |post|%>
+      <div class="c4">
+        <h4>-게시글</h4>
+
+        <div class="c2">
+          <h4>제목:<%=post.title%>, <!--여기 인식X 오류, 로그인 id : %=post.user.email %>, -->   작성자:<%=post.writer%></h4>
+
+          <p><%=post.content%></p>
+
+          <img id="image" src="<%= post.img_url %>">
+          <div>
+            <a href='/home/read/<%=post.id%>'>읽기</a>
+            /
+            <a href="/home/update/<%=post.id%>">수정</a>
+            /
+            <a href="/home/destroy/<%=post.id%>">삭제</a>
+          </div>
+        </div>
+        <h4>-현재까지 댓글</h4>
+
+
+        <div class="c3">
+
+          <!-- 지금까지의 댓글 보여주는 부분-->
+          <!--아래  replies 는 home controller 의 @부분 의 복수형태와 일치해야됨   -->
+          <!--아래 %=post~~ 로 안하도록,  즉 등호 안붙이도록, 등호 붙이면 시간, db 내 데이터들 표시됨-->
+          <% post.replies.each do |reply_object|%>
+              <div style="border:ridge">
+                <p align="right"> *댓글 최종 수정 시간 : <%=reply_object.updated_at%></p>
+
+                <pre><%=reply_object.comment%> </pre>
+
+                <p align="center">
+                  <a  href="/home/reply_destroy/<%=reply_object.id%>">댓글 삭제</a>
+                  /
+                  <a  href="/home/reply_update/<%=reply_object.id%>">댓글 수정</a>
+                </p>
+              </div>
+          <% end %>
+
+        </div>
+        <br>
+        <h4>-댓글 작성란</h4>
+        <div class="c3">
+          <!--댓글 다는 부분-->
+
+          <form action="/home/reply_mention/<%= post.id%>" method="get">
+
+            <textarea name="comment" id="comment_id" placeholder="댓글" rows="2" class = 'form-control' ></textarea>
+            <p  align="center">
+              <button  type="submit" class="btn btn-default">댓글등록</button>
+            </p>
+          </form>
+        </div>
+      </div>
+
+  <% end %>
+  <p id="temp_id"></p>
+
+</div>

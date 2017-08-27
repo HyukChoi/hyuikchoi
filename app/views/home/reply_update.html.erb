@@ -1,0 +1,30 @@
+
+<style>
+  .c1{
+    background-color: lightgreen;
+    margin-bottom: 20px;
+    margin-top:0px;
+    margin-left: 300px;
+    margin-right: 300px;
+
+  }
+  h1{
+    margin-bottom: 20px;
+    font-bold:true;
+    font-family: DialogInput;
+  }
+
+</style>
+
+<div class="c1">
+  <h2> 댓글 수정</h2>
+  <form method="get" action="/home/real_reply_update/<%=@reply3.id%>">
+
+    <div class="form-group">
+      <pre><input type="text" name="updated_comment" value="<%=@reply3.comment%>"> </pre>
+    </div>
+
+    <button type="submit" class="btn btn-default">댓글 수정</button>
+  </form>
+
+</div>
